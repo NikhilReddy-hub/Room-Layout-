@@ -41,11 +41,14 @@ st.sidebar.header("3. Furniture Requirements")
 available_furniture = ["Bed", "Study Table", "Sofa", "Wardrobe", "TV Unit", "Bookshelf"]
 selected_furniture = st.sidebar.multiselect("Select Furniture", available_furniture, default=["Bed", "Wardrobe"])
 
-st.sidebar.header("4. AI Settings")
-api_key_input = st.sidebar.text_input("Gemini API Key (Optional)", type="password", help="Enter your Gemini API key to get AI recommendations. Leave empty if set as environment variable.")
+# Check if API key is already configured (e.g., via Streamlit Community Cloud Secrets)
+api_key_configured = os.environ.get("GEMINI_API_KEY") or (hasattr(st, "secrets") and "GEMINI_API_KEY" in st.secrets)
 
-if api_key_input:
-    os.environ["GEMINI_API_KEY"] = api_key_input
+if not api_key_configured:
+    st.sidebar.header("4. AI Settings")
+    api_key_input = st.sidebar.text_input("Gemini API Key", type="password", help="Required to get AI recommendations.")
+    if api_key_input:
+        os.environ["GEMINI_API_KEY"] = api_key_input
 
 generate_btn = st.sidebar.button("Generate Layout", type="primary")
 

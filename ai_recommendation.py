@@ -6,6 +6,16 @@ def get_ai_recommendation(room_width, room_height, room_type, style, furniture_l
     Calls the Google Gemini API to generate personalized room layout and styling recommendations.
     """
     api_key = os.environ.get("GEMINI_API_KEY")
+    
+    # Fallback to Streamlit secrets
+    if not api_key:
+        try:
+            import streamlit as st
+            if hasattr(st, "secrets") and "GEMINI_API_KEY" in st.secrets:
+                api_key = st.secrets["GEMINI_API_KEY"]
+        except Exception:
+            pass
+
     if not api_key:
         return "⚠️ Gemini API Key not found. Please set the GEMINI_API_KEY environment variable or enter it in the sidebar to get AI recommendations."
 
