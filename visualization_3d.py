@@ -76,8 +76,7 @@ def draw_3d_layout(room_width, room_height, placed_items):
             zaxis=dict(title='Height (ft)', range=[0, 10]),
             aspectmode='data' # Ensures equal scaling for x, y, z
         ),
-        margin=dict(l=0, r=0, b=0, t=30),
-        title=dict(text="Interactive 3D Room Layout", x=0.5)
+        margin=dict(l=0, r=0, b=0, t=40)
     )
 
     return fig

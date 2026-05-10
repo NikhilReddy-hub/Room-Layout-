@@ -88,8 +88,9 @@ if generate_btn:
                     st.pyplot(fig_2d)
                 
                 with tab2:
+                    st.markdown("**Interactive 3D Room Layout**")
                     fig_3d = draw_3d_layout(room_width, room_height, placed_items)
-                    st.plotly_chart(fig_3d, use_container_width=True)
+                    st.plotly_chart(fig_3d, use_container_width=True, config={'displayModeBar': True})
                 
             with row1_col2:
                 st.subheader("✨ AI Recommendations")
