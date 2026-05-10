@@ -3,12 +3,12 @@ class LayoutEngine:
         self.room_width = room_width
         self.room_height = room_height
         self.furniture_catalog = {
-            "Bed": {"width": 6.0, "height": 6.5},
-            "Study Table": {"width": 4.0, "height": 2.0},
-            "Sofa": {"width": 6.0, "height": 3.0},
-            "Wardrobe": {"width": 4.0, "height": 2.0},
-            "TV Unit": {"width": 4.0, "height": 1.5},
-            "Bookshelf": {"width": 3.0, "height": 1.5}
+            "Bed": {"width": 6.0, "height": 6.5, "z_height": 2.0},
+            "Study Table": {"width": 4.0, "height": 2.0, "z_height": 2.5},
+            "Sofa": {"width": 6.0, "height": 3.0, "z_height": 3.0},
+            "Wardrobe": {"width": 4.0, "height": 2.0, "z_height": 6.5},
+            "TV Unit": {"width": 4.0, "height": 1.5, "z_height": 2.0},
+            "Bookshelf": {"width": 3.0, "height": 1.5, "z_height": 6.0}
         }
         self.placed_items = []
 
@@ -46,6 +46,7 @@ class LayoutEngine:
             
         w = self.furniture_catalog[item_name]["width"]
         h = self.furniture_catalog[item_name]["height"]
+        z = self.furniture_catalog[item_name].get("z_height", 3.0)
         
         # Simple heuristic placement based on item type
         # Step size for scanning
@@ -72,7 +73,7 @@ class LayoutEngine:
 
         # Try to place at preferred, if failed, scan the room
         if self.is_valid_placement(start_x, start_y, w, h):
-            self.placed_items.append({"name": item_name, "x": start_x, "y": start_y, "w": w, "h": h})
+            self.placed_items.append({"name": item_name, "x": start_x, "y": start_y, "w": w, "h": h, "z": z})
             return True
             
         # Scan the room grid to find an empty spot
@@ -81,7 +82,7 @@ class LayoutEngine:
             y = 0.5
             while y <= self.room_height - h - 0.5:
                 if self.is_valid_placement(x, y, w, h):
-                    self.placed_items.append({"name": item_name, "x": x, "y": y, "w": w, "h": h})
+                    self.placed_items.append({"name": item_name, "x": x, "y": y, "w": w, "h": h, "z": z})
                     return True
                 y += step
             x += step
@@ -92,7 +93,7 @@ class LayoutEngine:
             y = 0.5
             while y <= self.room_height - w - 0.5:
                 if self.is_valid_placement(x, y, h, w):
-                    self.placed_items.append({"name": item_name, "x": x, "y": y, "w": h, "h": w})
+                    self.placed_items.append({"name": item_name, "x": x, "y": y, "w": h, "h": w, "z": z})
                     return True
                 y += step
             x += step

@@ -3,6 +3,7 @@ import os
 from layout_engine import LayoutEngine
 from ai_recommendation import get_ai_recommendation
 from visualization import draw_2d_layout
+from visualization_3d import draw_3d_layout
 
 # Page config
 st.set_page_config(page_title="AI Room Layout Generator", page_icon="🏠", layout="wide")
@@ -79,9 +80,16 @@ if generate_btn:
             row1_col1, row1_col2 = st.columns([3, 2])
             
             with row1_col1:
-                st.subheader("2D Room Layout")
-                fig = draw_2d_layout(room_width, room_height, placed_items)
-                st.pyplot(fig)
+                st.subheader("Room Layout")
+                tab1, tab2 = st.tabs(["2D View", "3D View (Interactive)"])
+                
+                with tab1:
+                    fig_2d = draw_2d_layout(room_width, room_height, placed_items)
+                    st.pyplot(fig_2d)
+                
+                with tab2:
+                    fig_3d = draw_3d_layout(room_width, room_height, placed_items)
+                    st.plotly_chart(fig_3d, use_container_width=True)
                 
             with row1_col2:
                 st.subheader("✨ AI Recommendations")
